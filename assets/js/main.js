@@ -51,6 +51,7 @@ function compilatore(){
           var template = Handlebars.compile(source)
 
           var globalmedia = {
+            cop: data.results[i].poster_path,
             title : data.results[i].title,
             original_title : data.results[i].original_title,
             flag : flag
@@ -60,6 +61,7 @@ function compilatore(){
           var template = Handlebars.compile(source)
 
           var globalmedia = {
+            cop: data.results[i].poster_path,
             name : data.results[i].name,
             original_name : data.results[i].original_name,
             flag : flag
