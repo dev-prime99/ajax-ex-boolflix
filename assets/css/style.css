@@ -29,3 +29,7 @@ main{
   overflow-x: auto;
   color: #ffffff;
 }
+
+.media{
+  margin: 15px 0;
+}
