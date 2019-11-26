@@ -2,28 +2,71 @@
 
 $("#btn_search_bar").click(function (){
 
+  compilatore();
+
+});
+
+
+function compilatore(){
+
   //Save text input
   var input = $("#txt_search_bar").val();
   console.log(input);
-  $("main").empty();
 
   $.ajax({
-    url: "https://api.themoviedb.org/3/search/movie?api_key=ddb3139914f58732e5f61e64693b1c8f&query=" + input + "&page=1&include_adult=false",
+    url: "https://api.themoviedb.org/3/search/multi?api_key=ddb3139914f58732e5f61e64693b1c8f&query=" + input + "&page=1&include_adult=false",
     method: "GET",
     success: function (data){
+      // reset main
+      $("main").empty();
+      // reset input
+      $("#txt_search_bar").val("");
+      // salavare numero di voci prima pagina
       var num_film = data.results.length
 
+      // ciclo compilazione media
       for (var i = 0; i < num_film; i++) {
+        // console.log(data.results[i].media_type);
 
-        var source = $(".media-global").text()
-        var template = Handlebars.compile(source)
+        // selezione bandiera per l'inserimento
+        if (data.results[i].original_language == "en") {
+          var flag = "assets/img/en.png"
+        }else if (data.results[i].original_language == "it") {
+          var flag = "assets/img/it.png"
+        }else if (data.results[i].original_language == "us") {
+          var flag = "assets/img/us.png"
+        }else if (data.results[i].original_language == "fr") {
+          var flag = "assets/img/fr.png"
+        }else if (data.results[i].original_language == "de") {
+          var flag = "assets/img/de.png"
+        }else if (data.results[i].original_language == "es") {
+          var flag = "assets/img/es.png"
+        }else {
+          var flag = "assets/img/global.png"
+        }
 
-        var globalmedia = {
-					title : data.results[i].title,
-					original_title : data.results[i].original_title,
-					original_language : data.results[i].original_language
-				}
+        // scrematura film o tv
+        if (data.results[i].media_type == "movie"){ // FILM
+          var source = $(".movie-global").text()
+          var template = Handlebars.compile(source)
 
+          var globalmedia = {
+            title : data.results[i].title,
+            original_title : data.results[i].original_title,
+            flag : flag
+          }
+        } else if (data.results[i].media_type == "tv"){ // TV
+          var source = $(".tv-global").text()
+          var template = Handlebars.compile(source)
+
+          var globalmedia = {
+            name : data.results[i].name,
+            original_name : data.results[i].original_name,
+            flag : flag
+          }
+        }
+
+        // scrittura nell'html
         var html = template(globalmedia);
         $("main").append(html);
 
@@ -53,4 +96,4 @@ $("#btn_search_bar").click(function (){
     }
   });
 
-});
+}

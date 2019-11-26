@@ -26,12 +26,25 @@
 
     </main>
 
-    <script  class="media-global" type="text/x-handlebars-template">
+    <!-- Template film -->
+    <script  class="movie-global" type="text/x-handlebars-template">
 
       <div class="media">
         <h3 class="title">{{title}}</h3>
         <p class="og_title">{{original_title}}</p>
-        <p class="language">{{original_language}}</p>
+        <img class="language" src="{{flag}}" alt="">
+        <div class="vote"></div>
+      </div>
+
+    </script>
+
+    <!-- Template tv -->
+    <script  class="tv-global" type="text/x-handlebars-template">
+
+      <div class="media">
+        <h3 class="name">{{name}}</h3>
+        <p class="og_name">{{original_name}}</p>
+        <img class="language" src="{{flag}}" alt="">
         <div class="vote"></div>
       </div>
 
