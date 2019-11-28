@@ -30,11 +30,14 @@
     <script  class="movie-global" type="text/x-handlebars-template">
 
       <div class="media">
-        <img class="cover" src="https://image.tmdb.org/t/p/w500{{cop}}" alt="">
-        <h3 class="title">{{title}}</h3>
-        <p class="og_title">{{original_title}}</p>
-        <img class="language" src="{{flag}}" alt="">
-        <div class="vote"></div>
+        <img class="cover" src="https://image.tmdb.org/t/p/w342{{cop}}" alt="">
+        <div class="hover">
+          <p class="title"><b>Title: </b>{{title}}</p>
+          <p class="og_title"><b>Original title: </b>{{original_title}}</p>
+          <img class="language" src="{{flag}}" alt="">
+          <div class="vote"></div>
+          <p class="overview"><b>Overview: </b>{{overview}}</p>
+        </div>
       </div>
 
     </script>
@@ -43,11 +46,14 @@
     <script  class="tv-global" type="text/x-handlebars-template">
 
       <div class="media">
-        <img class="cover" src="https://image.tmdb.org/t/p/w500{{cop}}" alt="">
-        <h3 class="name">{{name}}</h3>
-        <p class="og_name">{{original_name}}</p>
-        <img class="language" src="{{flag}}" alt="">
-        <div class="vote"></div>
+        <img class="cover" src="https://image.tmdb.org/t/p/w342{{cop}}" alt="">
+        <div class="hover">
+          <p class="name"><b>Name: </b>{{name}}</p>
+          <p class="og_name"><b>Original name: </b>{{original_name}}</p>
+          <img class="language" src="{{flag}}" alt="">
+          <div class="vote"></div>
+          <p class="overview"><b>Overview: </b>{{overview}}</p>
+        </div>
       </div>
 
     </script>

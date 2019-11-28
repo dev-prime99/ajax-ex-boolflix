@@ -54,7 +54,8 @@ function compilatore(){
             cop: data.results[i].poster_path,
             title : data.results[i].title,
             original_title : data.results[i].original_title,
-            flag : flag
+            flag : flag,
+            overview : data.results[i].overview
           }
         } else if (data.results[i].media_type == "tv"){ // TV
           var source = $(".tv-global").text()
@@ -64,7 +65,8 @@ function compilatore(){
             cop: data.results[i].poster_path,
             name : data.results[i].name,
             original_name : data.results[i].original_name,
-            flag : flag
+            flag : flag,
+            overview : data.results[i].overview
           }
         }
 
@@ -72,7 +74,7 @@ function compilatore(){
         var html = template(globalmedia);
         $("main").append(html);
 
-        //assegnazione stelle valutazione
+        // assegnazione stelle valutazione
         var vote = data.results[i].vote_average;
         var halfvote = parseInt(Math.floor(vote / 2));
         console.log(halfvote);
@@ -98,4 +100,4 @@ function compilatore(){
     }
   });
 
-}
+};
