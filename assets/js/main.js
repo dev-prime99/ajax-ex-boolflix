@@ -2,23 +2,31 @@
 
 $(document).ready(function() {
 
+  var parola, numpag = 1;
+
   $("#btn_search_bar").click(function (){
 
-    compilatore();
+    // salvare la parola di ricerca
+    parola = $("#txt_search_bar").val();
+
+    compilatore(1, parola);
 
   });
 
-  $("a").click(function (){
-    alert("ciao");
-  });
+  function compilatore(nclick, input){
+    var nclick, nump;
 
-  function compilatore(){
-    //Save text input
-    var input = $("#txt_search_bar").val();
-    console.log(input);
+    // aggiungere la pagina al link della url(ajax)
+    if (nclick == "" && nclick < 1) {
+      nump = 1;
+    } else {
+      nump = nclick;
+    }
+
+    // console.log(nump);
 
     $.ajax({
-      url: "https://api.themoviedb.org/3/search/multi?api_key=ddb3139914f58732e5f61e64693b1c8f&query=" + input + "&page=1&include_adult=false",
+      url: "https://api.themoviedb.org/3/search/multi?api_key=ddb3139914f58732e5f61e64693b1c8f&query=" + input + "&page=" + nump + "&include_adult=false",
       method: "GET",
       success: function (data){
         // reset main
@@ -56,12 +64,14 @@ $(document).ready(function() {
             var source = $(".movie-global").text()
             var template = Handlebars.compile(source)
             var url_cover = url_coverbase + data.results[i].poster_path;
-            console.log(url_cover);
+            // console.log(url_cover);
 
+            // aggiunta cover
             if (url_cover == "https://image.tmdb.org/t/p/w342null") {
               url_cover = "";
             }
 
+            // handlebars
             var globalmedia = {
               cop: url_cover,
               title : data.results[i].title,
@@ -72,7 +82,15 @@ $(document).ready(function() {
           } else if (data.results[i].media_type == "tv"){ // TV
             var source = $(".tv-global").text()
             var template = Handlebars.compile(source)
+            // url completa per il poster
+            var url_cover = url_coverbase + data.results[i].poster_path;
 
+            // aggiunta cover
+            if (url_cover == "https://image.tmdb.org/t/p/w342null") {
+              url_cover = "";
+            }
+
+            // handlebars
             var globalmedia = {
               cop: url_cover,
               name : data.results[i].name,
@@ -89,8 +107,9 @@ $(document).ready(function() {
           // assegnazione stelle valutazione
           var vote = data.results[i].vote_average;
           var halfvote = parseInt(Math.floor(vote / 2));
-          console.log(halfvote);
+          // console.log(halfvote);
 
+          // aggiunta delle stelle
           if (halfvote < 1) {
             $(".media:last-child .vote").append('<i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>')
           }else if (halfvote == 1) {
@@ -107,24 +126,77 @@ $(document).ready(function() {
 
         }
 
-        // creazione pagine
+        // creazione pagine + freccie
         var n_pag = data.total_pages;
         // console.log(n_pag);
+
+        // reset pie pagina (numeri e freccie)
+        $(".pag").empty();
 
         $(".pag").append("<i class='fas fa-chevron-left'</i>")
         for (var i = 1; i <= n_pag; i++) {
           // console.log(i);
-          $(".pag").append("<a href='#' class='numpag'>" + i + "</a>")
+          $(".pag").append("<p class='numpag'>" + i + "</p>")
         }
         $(".pag").append("<i class='fas fa-chevron-right'</i>")
 
-        console.log(num_film);
+        // console.log(num_film);
+
+        return input;
       },
       error: function (errore){
 
       }
     });
 
+    // console.log(input);
+
+    parola = input;
+
   };
+
+
+  // funzione selezione numero di pagina
+  $(document).on('click', '.numpag', function(){
+    var n = $(this).text();
+
+    numpag = parseInt(n);
+
+    compilatore(numpag, parola)
+  });
+
+  // funzione spostarsi avanti di uno con la freccia tra le pagine
+  $(document).on('click', '.pag .fa-chevron-right', function(){
+
+    var ln = $(".pag p:last-of-type").text()
+
+    var ultimo = parseInt(ln);
+
+    if (numpag < ultimo) {
+      numpag++;
+    } else {
+      numpag = 1;
+    }
+
+    compilatore(numpag, parola);
+
+  });
+
+  // funzione spostarsi indietro di uno con la freccia tra le pagine
+  $(document).on('click', '.pag .fa-chevron-left', function(){
+
+    var ln = $(".pag p:last-of-type").text()
+
+    var ultimo = parseInt(ln);
+
+    if (numpag > 1) {
+      numpag--;
+    } else {
+      numpag = ultimo;
+    }
+
+    compilatore(numpag, parola);
+
+  });
 
 });
